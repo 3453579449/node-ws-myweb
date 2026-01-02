@@ -1,13 +1,9 @@
-FROM node:20-alpine3.20
+FROM python:3.10-slim
 
-WORKDIR /tmp
+WORKDIR /app
 
-COPY index.js package.json ./
+RUN pip install fastapi uvicorn httpx
 
-EXPOSE 3000
+COPY app.py .
 
-RUN apk update && apk add --no-cache bash openssl curl &&\
-    chmod +x index.js &&\
-    npm install
-
-CMD ["node", "index.js"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
